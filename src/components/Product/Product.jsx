@@ -1,23 +1,35 @@
 import React from 'react'
-import { Card, CardMedia, CardActions, Typography, IconButton } from '@material-ui/core';
+import { Card, CardContent, CardMedia, CardActions, Typography, IconButton } from '@material-ui/core';
 import { AddShoppingCart } from '@material-ui/icons';
 
-const Product = () => {
+import useStyles from './styles';
+
+// Instead of using props, we DESTRUCTURE product using props as to not repeat code
+const Product = ({ product }) => {
+    // Calling styles like a hook
+    const classes = useStyles();
   return (
     <div>
         <Card className={classes.root}>
             <CardMedia className={classes.media} image='' title={Product.name}/>
             <CardContent>
-                <div className={classes.CardContent}>
+                <div className={classes.cardContent}>
                     <Typography variant="h5" gutterBottom>
-                        {Product.name}
+                        {product.name}
                     </Typography>
                     <Typography variant="h5" gutterBottom>
-                        {Product.name}
+                        {product.price}
                     </Typography>
 
                 </div>
+                <Typography variant='h2' color="textSecondary">{product.description}</Typography>
             </CardContent>
+            <CardActions disableSpacing className={classes.CardActions}>
+                <IconButton aria-label='Add to cart'>
+                    <AddShoppingCart />
+                </IconButton>
+ 
+            </CardActions>
 
         </Card>
         
