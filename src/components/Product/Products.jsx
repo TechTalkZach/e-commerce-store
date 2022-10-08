@@ -11,7 +11,7 @@ const products = [
 
 
 
-const Products = () => {
+const Products = ( { products } ) => {
     const classes = useStyles();
 
     return (
