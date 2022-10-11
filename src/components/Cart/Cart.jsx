@@ -2,19 +2,21 @@ import React from 'react'
 import { Container, Typography, Button, Grid  } from '@material-ui/core';
 
 import useStyles from './styles';
+import CartItem from './CartItem/CartItem';
 
 
 const Cart = ( { cart } ) => {
     // !=0 === !cart.line_items.lenth
     console.log(cart.line_items)
-    const isEmpty = !cart.line_items.length;
+    // No need for variable here
+    // const isEmpty = !cart.line_items.length;
     const classes = useStyles();
 
     const EmptyCart = () => (
       <Typography variant='subtitle1'>You have no items in your shopping cart, start adding some!</Typography>
     );
 
-    const FilledCart = () => {
+    const FilledCart = () => (
       <>
       <Grid container spacing={3}>
         {cart.line_items.map((item) => (
@@ -32,13 +34,15 @@ const Cart = ( { cart } ) => {
 
       </div>
       </>
-    }
+    );
+
+    if(!cart.line_items) return 'Loading...';
     
     return (
     <Container>
         <div className={classes.toolbar} />
         <Typography className={classes.title} variant="h3">Your Shopping Cart</Typography>
-        { isEmpty ? <EmptyCart /> : <FilledCart /> }
+        { !cart.line_items.length ? <EmptyCart /> : <FilledCart /> }
     </Container>
   )
 }

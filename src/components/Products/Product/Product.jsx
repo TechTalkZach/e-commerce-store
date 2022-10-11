@@ -9,6 +9,8 @@ const Product = ({ product, onAddToCart }) => {
     // Calling styles like a hook
     const classes = useStyles();
 
+    const handleAddToCart = () => onAddToCart(product.id, 1);
+
 
   return (
     <div>
@@ -28,7 +30,7 @@ const Product = ({ product, onAddToCart }) => {
                 <Typography dangerouslySetInnerHTML={{ __html: product.description}} variant='body2' color="textSecondary" />
             </CardContent>
             <CardActions disableSpacing className={classes.CardActions}>
-                <IconButton aria-label='Add to cart' onClick={() => onAddToCart(product.id, 1)}>
+                <IconButton aria-label='Add to cart' onClick={handleAddToCart}>
                     <AddShoppingCart />
                 </IconButton>
  
