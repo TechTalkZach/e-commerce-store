@@ -12,6 +12,7 @@ const App = () => {
   const [products, setProducts] = useState([]);
   const [cart, setCart] = useState({});
   const [loading, setLoading] = useState(true);
+  let [updated, setUpdated] = useState(1);
   
   const effectRan = useRef(false);
 
@@ -22,31 +23,26 @@ const App = () => {
     setProducts(data);
     setLoading(false);
   }
-  // commerce.cart.retrieve().then((cart) => console.log(cart));
 
   const fetchCart = async () => {
-    // commerce.cart.retrieve().then((cart) => console.log(cart));
+    
     setCart(await commerce.cart.retrieve());
   }
 
   const handleAddToCart = async (productId, quantity) => {
-    const item = await commerce.cart.add(productId, quantity);
-    // commerce.cart.add(productId, quantity).then(json => console.log(json));
-    setCart(item.cart);
-    // console.log(cart.total_items)
+    // const item = await commerce.cart.add(productId, quantity);
+    // setCart(item.cart);
+    setCart(await commerce.cart.add(productId, quantity));
+    console.log(cart.total_items)
   }
   // Dependency Array set to empty so it only runs @ the start (Component did mount)
   useEffect(() => {
-    if(effectRan.current === false) {
       fetchProducts();
       fetchCart();
-    }
 
-    return () => {
-      console.log('unmounted')
-      effectRan.current = true
-    }
   }, []);
+
+  if(!cart) return null;
 
   if(cart === undefined) return <h1>LOADING...</h1>;
   
