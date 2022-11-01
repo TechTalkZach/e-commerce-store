@@ -13,10 +13,8 @@ const Product = ({ product, onAddToCart }) => {
 
 
   return (
-    <div>
-        
         <Card className={classes.root}>
-            <CardMedia className={classes.media} image={product.image.filename} title={product.name}/>
+            <CardMedia className={classes.media} image={product.image?.url} title={product.name}/>
             <CardContent>
                 <div className={classes.cardContent}>
                     <Typography variant="h5" gutterBottom>
@@ -36,10 +34,8 @@ const Product = ({ product, onAddToCart }) => {
  
             </CardActions>
 
-        </Card>
-        
-    </div>
-  )
-}
+        </Card>    
+  );
+};
 
 export default Product
