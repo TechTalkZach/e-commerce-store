@@ -8,7 +8,7 @@ import { commerce } from '../../lib/commerce';
 import FormInput from './CustomTextField';
 
 
-const AddressForm = ({ checkoutToken }) => {
+const AddressForm = ({ checkoutToken, next }) => {
   const [shippingCountries, setShippingCountries] = useState([]);
   const [shippingCountry, setShippingCountry] = useState('');
   const [shippingSubdivisions, setShippingSubdivisions] = useState([]);
@@ -21,7 +21,6 @@ const AddressForm = ({ checkoutToken }) => {
 
   const fetchShippingCountries = async (checkoutTokenId) => {
     const { countries } = await commerce.services.localeListShippingCountries(checkoutTokenId);
-    const subdivisions = Object.entries
 
     console.log(countries)
     setShippingCountries(countries);
@@ -60,14 +59,14 @@ const AddressForm = ({ checkoutToken }) => {
     <>
       <Typography variant="h6" gutterBottom>Shipping Address</Typography>
       <FormProvider {...methods}>
-        <form onSubmit={methods.handleSubmit((data) => test({ ...data, shippingCountry, shippingSubdivision, shippingOption}))}>
+        <form onSubmit={methods.handleSubmit((data) => next({ ...data, shippingCountry, shippingSubdivision, shippingOption}))}>
           <Grid container spacing={3}>
-            <FormInput required name='firstName' label='First Name'/>
-            <FormInput required name='lastName' label='Last Name'/>
-            <FormInput required name='address1' label='Address'/>
-            <FormInput required name='email' label='Email'/>
-            <FormInput required name='city' label='City'/>
-            <FormInput required name='postal' label='Postal code'/>
+            <FormInput name='firstName' label='First Name'/>
+            <FormInput name='lastName' label='Last Name'/>
+            <FormInput name='address1' label='Address'/>
+            <FormInput name='email' label='Email'/>
+            <FormInput name='city' label='City'/>
+            <FormInput name='postal' label='Postal code'/>
             <Grid item xs={12} sm={6}>
               <InputLabel>Shipping Country</InputLabel>
               <Select value={shippingCountry} fullWidth onChange={(e) => setShippingCountry(e.target.value)}>
@@ -81,7 +80,7 @@ const AddressForm = ({ checkoutToken }) => {
             <Grid item xs={12} sm={6}>
               <InputLabel>Shipping Subdivision</InputLabel>
               <Select value={shippingSubdivision} fullWidth onChange={(e) => setShippingSubdivision(e.target.value)}>
-                {Object.entries(shippingSubdivisions).map(([code, name]) => ({id: code, label: name})).map((item) => (
+                {Object.entries(shippingSubdivisions).map(([code, name]) => ({ id: code, label: name })).map((item) => (
                   <MenuItem key={item.id} value={item.id}>
                     {item.label}
                   </MenuItem>
