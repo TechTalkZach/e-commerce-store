@@ -12,17 +12,17 @@ const Navbar = ({ totalItems }) => {
     const classes = useStyles();
     const location = useLocation();
 
-    if(location.pathname == '/')
+    if(location.pathname === '/')
     return (
         <>
             <AppBar position='fixed' className={classes.appBar} color="inherit" >
                 <Toolbar>
                     <Typography component={Link} to="/" variant="h6" className={classes.title} color="inherit">
                         <img src={logo} alt="Commerce store" height="25px" className={classes.image} />
-                        Commerce.js
+                        E-Commerce Store
                     </Typography>
                     <div className={classes.grow} />
-                    {location.pathname == '/' && (       
+                    {location.pathname === '/' && (       
                     <div className={classes.button}>
                         <IconButton component={Link} to="/cart" aria-label="Show cart items" color="inherit">
                             <Badge badgeContent={totalItems} color="secondary">
