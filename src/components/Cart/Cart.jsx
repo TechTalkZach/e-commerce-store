@@ -6,25 +6,29 @@ import useStyles from './styles';
 import CartItem from './CartItem/CartItem';
 
 
-const Cart = ( { cart, handleUpdateCartQty, handleRemoveFromCart, handleEmptyCart } ) => {
+const Cart = ( { cart, onUpdateCartQty, onRemoveFromCart, onEmptyCart } ) => {
+    const classes = useStyles();
     // !=0 === !cart.line_items.lenth
     console.log(cart.line_items)
     // No need for variable here
     // const isEmpty = !cart.line_items.length;
-    const classes = useStyles();
+
+    const handleEmptyCart = () => onEmptyCart();
 
     const EmptyCart = () => (
       <Typography variant='subtitle1'>You have no items in your shopping cart
-        <Link to="/" className={classes.link}>start adding some items</Link>
+        <Link to="/" className={classes.link}>    START ADDING ITEMS</Link>
       </Typography>
     );
+
+    if(!cart.line_items) return 'Loading...';
 
     const FilledCart = () => (
       <>
       <Grid container spacing={3}>
         {cart.line_items.map((item) => (
           <Grid item xs={12} sm={4} key={item.id}>
-            <CartItem item={item} onUpdateCartQty={handleUpdateCartQty} onRemoveFromCart={handleRemoveFromCart} />
+            <CartItem item={item} onUpdateCartQty={onUpdateCartQty} onRemoveFromCart={onRemoveFromCart} />
           </Grid>
         ))}
       </Grid>
@@ -39,14 +43,13 @@ const Cart = ( { cart, handleUpdateCartQty, handleRemoveFromCart, handleEmptyCar
       </>
     );
 
-    if(!cart.line_items) return 'Loading...';
     
     return (
      
     <Container>
         <div className={classes.toolbar} />
         <Typography className={classes.title} variant="h3" gutterBottom>Your Shopping Cart</Typography>
-        { !cart.line_items.length ? <EmptyCart /> : <FilledCart /> }
+        { !cart.line_items.length ? EmptyCart() : FilledCart() }
     </Container>
   )
 }
