@@ -13,6 +13,8 @@ const App = () => {
   const [cart, setCart] = useState({});
   const [loading, setLoading] = useState(true);
   let [updated, setUpdated] = useState(1);
+  const [order, setOrder] = useState({});
+  const [errorMessage, setErrorMessage] = useState('');
   
   const effectRan = useRef(false);
 
@@ -37,14 +39,14 @@ const App = () => {
     console.log(cart.total_items)
   }
 
-  const handleUpdateCartQty = async (productId, quantity) => {
-    const { cart } = await commerce.cart.update(productId, {quantity} );
+  const handleUpdateCartQty = async (lineItemId, quantity) => {
+    const { cart } = await commerce.cart.update(lineItemId, {quantity} );
 
     setCart(cart)
   }
 
-  const handleRemoveFromCart = async (productId) => {
-    const { cart } = await commerce.cart.remove(productId);
+  const handleRemoveFromCart = async (lineItemId) => {
+    const { cart } = await commerce.cart.remove(lineItemId);
 
     setCart(cart)
   }
@@ -54,6 +56,23 @@ const App = () => {
 
     setCart(cart);
   } 
+
+  const refreshCart = async () => {
+    const newCart = await commerce.cart.refresh();
+
+    setCart(newCart)
+  }
+
+  const handleCaptureCheckout = async (checkoutTokenId, newOrder) => {
+    try{
+      const incomingOrder = await commerce.checkout.capture(checkoutTokenId, newOrder);
+
+      setOrder(incomingOrder);
+      refreshCart();
+    } catch (error) {
+      setErrorMessage(error.data.error.message);
+    }
+  }
   // Dependency Array set to empty so it only runs @ the start (Component did mount)
   useEffect(() => {
       fetchProducts();
@@ -70,16 +89,26 @@ const App = () => {
        <div>
        <Navbar totalItems={cart.total_items} />
        <Routes>
-          <Route path='/' element={ <Products products={products} onAddToCart={handleAddToCart} />}></Route>
+          <Route path='/' element={ <Products 
+                                      products={products} 
+                                      onAddToCart={handleAddToCart} />}>
+
+          </Route>
           <Route path='/cart' element={<Cart 
                                             cart={cart}
-                                            handleUpdateCartQty={handleUpdateCartQty}
-                                            handleRemoveFromCart={handleRemoveFromCart}
-                                            handleEmptyCart={handleEmptyCart} 
+                                            onUpdateCartQty={handleUpdateCartQty}
+                                            onRemoveFromCart={handleRemoveFromCart}
+                                            onEmptyCart={handleEmptyCart} 
                                         />}>
 
         </Route>
-        <Route path='/checkout' element={<Checkout />}></Route>
+        <Route path='/checkout' element={<Checkout 
+                                          cart={cart}
+                                          order={order} 
+                                          onCaptureCheckout={handleCaptureCheckout} 
+                                          error={errorMessage} 
+                                          />}>
+        </Route>
        </Routes>
     </div>
     </Router>
