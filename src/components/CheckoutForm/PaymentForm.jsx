@@ -37,9 +37,9 @@ const PaymentForm = ({ checkoutToken, shippingData, backStep, onCaptureCheckout,
           gateway: 'stripe',
           stripe: {
             payment_method_id: paymentMethod.id
-          }
-        }
-      }
+          },
+        },
+      };
 
       onCaptureCheckout(checkoutToken.id, orderData);
 
@@ -49,7 +49,7 @@ const PaymentForm = ({ checkoutToken, shippingData, backStep, onCaptureCheckout,
 
 
     }
-  }
+  };
   return (
     <>
        <Review checkoutToken={checkoutToken} />
